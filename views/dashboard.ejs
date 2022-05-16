@@ -1,0 +1,122 @@
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-statistic-2">
+                <div class="card-icon shadow-primary bg-primary">
+                    <i class="fas fa-address-book"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Total Contact</h4>
+                    </div>
+                    <div class="card-body">
+                        <%= jumlah %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Tambah Data</button>
+                    <h4></h4>
+                    <div class="card-header-action">
+                        <form action="/cari" method="POST">
+                            <div class="input-group">
+                                <input type="search" name="nama" class="form-control" placeholder="Cari kontak disini">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary btn-sm ml-2" type="submit">Cari</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive table-invoice">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Identitas</th>
+                                <th>Nomor Telepon</th>
+                                <th>Aksi</th>
+                            </tr>
+                            <% if (contacts.length === 0) { %>
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <p>Data kontak tidak ditemukan</p>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <% let no = 1; %>
+                            <% contacts.forEach(contact => { %>
+                            <tr>
+                                <td><%= no++ %></td>
+                                <td class="font-weight-600"><%= contact.nama %></td>
+                                <td><a href="mailto:<%= contact.email %>"><%= contact.email %></a></td>
+                                <td>
+                                    <div class="badge badge-warning"><%= contact.jabatan %></div>
+                                </td>
+                                <td>
+                                    <a href="tel:<%= contact.nohp %>" class="badge badge-primary"><%= contact.nohp %></a>
+                                </td>
+                                <td>
+                                    <a href="/contact/<%= contact._id %>" class="btn btn-primary btn-sm my-1">Detail</a>
+                                    <form action="/contact?_method=DELETE" method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="<%= contact._id %>">
+                                        <button type="submit" class="btn btn-danger btn-sm my-1">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="/contact" method="POST">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Nama lengkap</label>
+                            <input type="text" class="form-control" name="nama" placeholder="Masukan nama lengkap disini">
+                        </div>
+                        <div class="form-group">
+                            <label>No Handphone</label>
+                            <input type="number" class="form-control" name="nohp" placeholder="Masukan no hp disini">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Masukan email disini">
+                        </div>
+                        <div class="form-group">
+                            <label>Identitas</label>
+                            <input type="text" class="form-control" name="jabatan" placeholder="Masukan identitas disini">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
